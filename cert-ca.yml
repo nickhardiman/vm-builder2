@@ -80,7 +80,7 @@
     ansible.builtin.copy:
       src: "{{ dir_ca }}/ca-certificate.pem"
       remote_src: yes
-      dest: /etc/pki/ca-trust/source/anchors/ca-certificate.key
+      dest: /etc/pki/ca-trust/source/anchors/ca-certificate.pem
       mode: '0644'
     register: r_cp_ca_cert
 
