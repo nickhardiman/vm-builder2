@@ -69,8 +69,6 @@
 #
 # checks
 
-- name: create a server certificate
-  ansible.builtin.import_playbook: cert-server.yml
 
 # somehow get a copy of the boot ISO onto builder1.
 #  scp host1.lab.example.com:/var/lib/libvirt/images/rhel-8.6-x86_64-boot.iso builder1.lab.example.com:/var/tmp/

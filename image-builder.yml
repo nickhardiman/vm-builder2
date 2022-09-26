@@ -24,3 +24,22 @@
       state: started
       enabled: yes
 
+
+# shenanigans to get ISO from hypervisor to builder
+  - name: .ssh directory
+    ansible.builtin.file:
+      path: /root/.ssh
+      state: directory
+      mode: '0700'
+
+  - name: authorized_keys file
+    ansible.builtin.file:
+      path: /root/.ssh/authorized_keys
+      content: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCqoNhX7+mzhU9pEnor291D2MNvCxT2Ee6N0clKTdR8UpZbf2j0Eb9sBtxy9opVgu38tnG/3lQj0ha94Q1mJOI+puaRfZEP17u2C5rMdAkF4Fn7ipOmlTR/QIdhYAJOf7sVk5ftCz9DYBonE/JLCX+cutJ9VuKgZMQx9/NsG9kr/kRl9o/2WOaUKdFSOJaHZYv/nTIfMprca6GJUvJkdwG6BYAcDMeDFiLYpcB/JwRO0ZgsQWSTJpHfcz8WqarwVr8zNOmTBPO8bC5nJugiCc4/LVZVa5QvD4GlMNHNuwkbbf+B6h2MYSMMankAR0DlZ5WQbY14ja2fWGL1+qzNTuWldLIpsQk/1OW4beIF924V0nNJm6UGZtZJ4iiecRmKeOQgW/D6pEdAEy0NiIHMf1crQ6p6/xgLmOqD5v2uLSAwuwJLfyOG8xpSizUS8GadFXQKv/bX0GuPAUKTg9PpuZ9LPyqJ9i0ekBybYKvAxRtDSXjrI8h+C0k3G2kPfzWpDHE= root@host2.lab.example.com
+      mode: '0700'
+
+  - name: copy boot ISO
+    ansible.builtin.command:
+      cmd: scp /var/lib/libvirt/images/rhel-8.6-x86_64-boot.iso builder2.lab.example.com:/var/tmp/
+    delegate_to: host2.lab.example.com
+
