@@ -1,3 +1,12 @@
+- name: install apps
+  hosts: builder
+  become: no
+  serial: 1
+  gather_facts: no
+  tasks:
+  - name: check with ping
+    ping:
+
 - name: install container tools
   ansible.builtin.import_playbook: container-host.yml
 
