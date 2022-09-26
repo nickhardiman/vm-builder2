@@ -32,3 +32,14 @@ or something similar like
 ```
 ansible-playbook  --become-password-file=~/my-pass --extra-var='host=another-host' delete.yml
 ```
+
+An ansible-navigator example, changed to act like ansible-playbook. 
+This example pulls a custom Execution Environment container from a local registry if it is missing from the local store, and prompts for passwords.
+
+```
+ansible-navigator run image-builder.yml \
+  --eei hub1.lab.example.com/my_new_ee \
+  --ask-pass  --ask-become-pass \
+  --pull-policy=missing  \
+  --mode=stdout --playbook-artifact-enable=false
+```
