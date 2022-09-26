@@ -40,8 +40,8 @@
 
   - name: copy boot ISO
     ansible.builtin.shell:
-      cmd: scp  -oStrictHostKeyChecking=no  /var/tmp/rhel-8.6-x86_64-boot.iso ansible_user@builder2.lab.example.com:/var/tmp/
-    delegate_to: host2.lab.example.com
+      cmd: "scp  -oStrictHostKeyChecking=no  /var/tmp/rhel-8.6-x86_64-boot.iso ansible_user@{{ fqdn }}:/var/tmp/"
+    delegate_to: "{{ groups['hypervisor'][0] }}"
     become: no
 
   - name: done
