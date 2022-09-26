@@ -8,6 +8,6 @@
 
   - name: check the API
     ansible.builtin.uri:
-      url: https://builder1.lab.example.com/api/
+      url: https://{{ fqdn }}/api/
       validate_certs: no
 

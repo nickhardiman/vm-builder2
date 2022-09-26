@@ -6,8 +6,8 @@ Create
 
 ```
 # get the code
-git clone https://github.com/nickhardiman/vm-builder1
-cd vm-builder1
+git clone https://github.com/nickhardiman/vm-builder2
+cd vm-builder2
 # install roles to ~/.ansible/roles/
 ansible-galaxy install -r roles/requirements.yml 
 # build the machine

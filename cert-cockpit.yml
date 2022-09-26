@@ -4,7 +4,6 @@
   become: yes
   gather_facts: no
   vars:
-    fqdn: builder1.lab.example.com
     server_dir: /root/ca
     server_key_file: "{{ server_dir }}/{{ fqdn }}.key"
     server_cert_file: "{{ server_dir }}/{{ fqdn }}.pem"

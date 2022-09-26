@@ -3,11 +3,6 @@
   hosts: builder
   become: yes
   gather_facts: no
-  vars:
-    server_dir: /root/ca
-    server_cn: builder1.lab.example.com
-    server_secret_passphrase: redhat
-    ca_secret_passphrase: redhat
   tasks: 
 
   - name: required packages
