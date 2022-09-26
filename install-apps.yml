@@ -17,7 +17,8 @@
   ansible.builtin.import_playbook: cert-ca.yml
 
 - name: create a server certificate
-  ansible.builtin.import_playbook: cert-server-builder.yml
+  ansible.builtin.import_playbook: cert-server.yml
+  #ansible.builtin.import_playbook: cert-server-builder.yml
 
 - name: install the server certificate
   ansible.builtin.import_playbook: cert-cockpit.yml
