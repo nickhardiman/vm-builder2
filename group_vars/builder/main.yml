@@ -1,0 +1,43 @@
+---
+
+# virt-install
+# Variables to override are listed here. 
+#   https://github.com/nickhardiman/libvirt-guest/blob/main/defaults/main.yml
+# default OS is RHEL 9.0
+install_iso: /var/lib/libvirt/images/rhel-8.6-x86_64-dvd.iso
+os_variant: rhel8.5
+
+# compute 
+# size in MiB
+#ram: 4096
+
+# storage
+disk_size: 100
+# partitions
+# 1 for /boot/efi                600M
+# 2 for /boot                    1024M
+# 3 LVM Physical Volume          90G * 1024 = 92160M
+# LVM
+pv_size: 92160
+# LVM logical volume for /root   13G * 1024 = 13312M
+# LVM logical volume for /var    75G * 1024 = 76800M
+lv_var: 76800
+# LVM volume for swap: 256M
+
+# network
+# MAC addresses are listed here.
+#   https://hardiman.consulting/rhel/9/set-up/host1-libvirt-network.html
+nics:
+- 
+  name: enp1s0
+  mac: "52:54:00:00:00:20"
+  net: public0
+
+# OS
+host: builder2
+fqdn: "{{ host }}.lab.example.com"
+RPMs: 
+- osbuild-composer 
+- cockpit-composer
+server_cn: "{{ fqdn }}"
+

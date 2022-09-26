@@ -1,0 +1,9 @@
+---
+
+# accounts
+user_ansible_password: Password;1
+# server certificate
+server_dir: /root/ca
+server_secret_passphrase: redhat
+ca_secret_passphrase: redhat
+

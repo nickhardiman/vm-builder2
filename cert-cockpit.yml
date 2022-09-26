@@ -1,0 +1,36 @@
+---
+- name: cockpit uses server certificate
+  hosts: builder
+  become: yes
+  gather_facts: no
+  vars:
+    fqdn: builder1.lab.example.com
+    server_dir: /root/ca
+    server_key_file: "{{ server_dir }}/{{ fqdn }}.key"
+    server_cert_file: "{{ server_dir }}/{{ fqdn }}.pem"
+
+  tasks: 
+
+  - name: remove auto-generated self-signed certificate files
+    ansible.builtin.file:
+      path: 
+      - /etc/cockpit/ws-certs.d/0-self-signed-ca.pem 
+      - /etc/cockpit/ws-certs.d/0-self-signed.cert 
+      - /etc/cockpit/ws-certs.d/0-self-signed.key
+      state: absent
+
+  - name: copy server cert
+    ansible.builtin.slurp:
+      src: "{{ server_cert_file }}"
+    register: r_cert
+
+  - name: copy server cert
+    ansible.builtin.slurp:
+      src: "{{ server_key_file }}"
+    register: r_key
+
+  - name: create cockpit certificate file
+    ansible.builtin.template:
+      src: server.cert.j2
+      dest: "/etc/cockpit/ws-certs.d/{{ fqdn }}.cert"
+

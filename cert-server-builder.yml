@@ -1,0 +1,60 @@
+---
+- name: server CSR
+  hosts: builder
+  become: yes
+  gather_facts: no
+  vars:
+    server_dir: /root/ca
+    server_cn: builder1.lab.example.com
+    server_secret_passphrase: redhat
+    ca_secret_passphrase: redhat
+  tasks: 
+
+  - name: required packages
+    ansible.builtin.dnf:
+      name: python3-cryptography
+      state: latest
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: "{{ server_dir }}"
+      state: directory
+      mode: '0750'
+
+  # create private key {{ server_cn }}.key
+  # check with 
+  #   openssl rsa -check -noout -in {{ server_cn }}.key
+  - name: Create private key with password protection
+    community.crypto.openssl_privatekey:
+      path: "{{ server_dir }}/{{ server_cn }}.key"
+      #passphrase: "{{ server_secret_passphrase }}"
+      #cipher: auto
+
+  # create certificate and signing request {{ server_cn }}.csr
+  # View attributes and values in the CSR. 
+  #   openssl req -text -in {{ server_cn }}.csr
+  - name: Generate an OpenSSL Certificate Signing Request
+    community.crypto.openssl_csr:
+      path: "{{ server_dir }}/{{ server_cn }}.csr"
+      privatekey_path: "{{ server_dir }}/{{ server_cn }}.key"
+      common_name: "{{ server_cn }}"
+
+  # create signed certificate {{ server_cn }}.pem
+  # View attributes and values in the new certificate.
+  #   openssl x509 -in {{ server_cn }}.pem -noout -text
+  # Check the certificate chain.
+  #   openssl verify -CAfile  ca-certificate.pem  {{ server_cn }}.pem
+  # Check the server certificate and key match by comparing the modulus of each.
+  #   openssl x509 -noout -modulus -in {{ server_cn }}.pem | openssl md5
+  #   openssl rsa  -noout -modulus -in {{ server_cn }}.key | openssl md5
+  - name: Sign certificate with our CA
+    community.crypto.x509_certificate:
+      path: "{{ server_dir }}/{{ server_cn }}.pem"
+      csr_path: "{{ server_dir }}/{{ server_cn }}.csr"
+      provider: ownca
+      ownca_path: "{{ server_dir }}/ca-certificate.pem"
+      ownca_privatekey_path: "{{ server_dir }}/ca-certificate.key"
+      ownca_privatekey_passphrase: "{{ ca_secret_passphrase }}"
+      ownca_not_after: +365d  # valid for one year
+      ownca_not_before: "-1d"  # valid since yesterday
+

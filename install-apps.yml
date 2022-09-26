@@ -1,0 +1,20 @@
+- name: install container tools
+  ansible.builtin.import_playbook: container-host.yml
+
+- name: install image builder service
+  ansible.builtin.import_playbook: image-builder.yml
+
+- name: create and install a CA certificate
+  ansible.builtin.import_playbook: cert-ca.yml
+
+- name: create a server certificate
+  ansible.builtin.import_playbook: cert-server-builder.yml
+
+- name: install the server certificate
+  ansible.builtin.import_playbook: cert-cockpit.yml
+
+- name: install ansible tools
+  ansible.builtin.import_playbook: ansible-tools.yml
+
+
+

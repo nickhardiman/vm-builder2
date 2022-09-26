@@ -1,0 +1,17 @@
+# run
+#   ansible-galaxy install -r roles/requirements.yml 
+# This command installs roles to ~/.ansible/roles/
+# for more information, see
+#   https://galaxy.ansible.com/docs/using/installing.html
+#
+roles:
+  - src: https://github.com/nickhardiman/libvirt-guest
+  - src: https://github.com/nickhardiman/ansible-target
+  - name: geerlingguy.gitlab
+    version: 3.2.0
+collections:
+  - name: ansible.posix
+  - name: community.general
+  - name: community.crypto
+    version: 2.5.0
+

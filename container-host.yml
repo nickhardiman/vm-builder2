@@ -1,0 +1,15 @@
+- name: container host
+  hosts: builder
+  become: yes
+  gather_facts: no
+  tasks: 
+
+  # modularity 'container-tools' provides commands 'skopeo', 'podman', and more
+  - name: install container packages
+    ansible.builtin.dnf:
+      name: '@container-tools:rhel8'
+      state: present
+    register: r_dnf_container
+
+  # test
+
